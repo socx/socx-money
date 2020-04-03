@@ -8,26 +8,50 @@ const CONTACT_ENDPOINT =  `${QA_API_BASE}${CONTACTS_ENDPOINT}` ||
   `${LOCAL_API_BASE}${CONTACTS_ENDPOINT}`;
 
 class App extends Component {
-  state = {
-    contacts: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      contacts: [],
+      isLoading: false
+    };
+
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
   }
-  componentDidMount() {
+
+  // state = {
+  //   contacts: [],
+  //   isLoading: false
+  // }
+  handleClick() {
+    this.setState({ isLoading: true });
     fetch(CONTACT_ENDPOINT)
     .then(res => res.json())
     .then((response) => {
-      this.setState({ contacts: response.data })
+      this.setState({
+        contacts: response.data,
+        isLoading: false
+      })
     })
     .catch(console.log)
   } 
   render() {
     return (
       <div>
-        {this.state.contacts && this.state.contacts.length &&
-          <Contacts contacts={this.state.contacts} />
-        }
-        {(!this.state.contacts || !this.state.contacts.length) &&
-          <p>no contacts</p>
-        }
+        <p>
+          <button onClick={this.handleClick}>
+            Click me
+          </button>
+        </p>
+        <p>
+          <span className={this.state.isLoading ? '' : 'd-none'}>Loading...</span>
+          {this.state.contacts && this.state.contacts.length &&
+            <Contacts contacts={this.state.contacts} />
+          }
+          {/* {(!this.state.contacts || !this.state.contacts.length) &&
+            <span>no contacts</span>
+          } */}
+        </p>
       </div>
       
     )
