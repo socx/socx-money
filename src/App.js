@@ -19,10 +19,6 @@ class App extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  // state = {
-  //   contacts: [],
-  //   isLoading: false
-  // }
   handleClick() {
     this.setState({ isLoading: true });
     fetch(CONTACT_ENDPOINT)
@@ -48,9 +44,6 @@ class App extends Component {
           {this.state.contacts && this.state.contacts.length &&
             <Contacts contacts={this.state.contacts} />
           }
-          {/* {(!this.state.contacts || !this.state.contacts.length) &&
-            <span>no contacts</span>
-          } */}
         </p>
       </div>
       
