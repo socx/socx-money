@@ -35,38 +35,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-
-// import React, { Component } from 'react';
-// import Contacts from './components/contacts';
-
-// const CONTACT_ENDPOINT = `https://my-money.herokuapp.com/api/countries` ||
-//   'http://localhost:3008/api/contacts';
-
-// class App extends Component {
-//   state = {
-//     contacts: []
-//   }
-//   componentDidMount() {
-//     fetch(CONTACT_ENDPOINT)
-//     .then(res => res.json())
-//     .then((response) => {
-//       this.setState({ contacts: response.data })
-//     })
-//     .catch(console.log)
-//   } 
-//   render() {
-//     return (
-//       <div>
-//         {this.state.contacts && this.state.contacts.length &&
-//           <Contacts contacts={this.state.contacts} />
-//         }
-//         {!this.state.contacts || !}
-//       </div>
-      
-//     )
-//   }
-// }
-
-// export default App;
