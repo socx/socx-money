@@ -1,53 +1,118 @@
 import React, { Component } from 'react';
-import Contacts from './components/contacts';
 import {
-  QA_API_BASE, LOCAL_API_BASE, CONTACTS_ENDPOINT
-} from './constants/endpoints'
-
-const CONTACT_ENDPOINT =  `${QA_API_BASE}${CONTACTS_ENDPOINT}` ||
-  `${LOCAL_API_BASE}${CONTACTS_ENDPOINT}`;
+  MDBNavbar,
+  MDBNavbarBrand,
+  MDBNavbarNav,
+  MDBNavbarToggler,
+  MDBCollapse,
+  MDBNavItem,
+  MDBFooter,
+  MDBNavLink,
+  MDBTooltip,
+  MDBIcon
+} from 'mdbreact';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ReactComponent as Logo } from './assets/logo.svg';
+import Routes from './Routes';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      contacts: [],
-      isLoading: false
-    };
+  state = {
+    collapseID: ''
+  };
 
-    // This binding is necessary to make `this` work in the callback
-    this.handleClick = this.handleClick.bind(this);
-  }
+  toggleCollapse = collapseID => () =>
+    this.setState(prevState => ({
+      collapseID: prevState.collapseID !== collapseID ? collapseID : ''
+    }));
 
-  handleClick() {
-    this.setState({ isLoading: true });
-    fetch(CONTACT_ENDPOINT)
-    .then(res => res.json())
-    .then((response) => {
-      this.setState({
-        contacts: response.data,
-        isLoading: false
-      })
-    })
-    .catch(console.log)
-  } 
+  closeCollapse = collID => () => {
+    const { collapseID } = this.state;
+    window.scrollTo(0, 0);
+    collapseID === collID && this.setState({ collapseID: '' });
+  };
+
   render() {
+    const overlay = (
+      <div
+        id='sidenav-overlay'
+        style={{ backgroundColor: 'transparent' }}
+        onClick={this.toggleCollapse('mainNavbarCollapse')}
+      />
+    );
+
+    const { collapseID } = this.state;
+
     return (
-      <div>
-        <p>
-          <button onClick={this.handleClick}>
-            Click me
-          </button>
-        </p>
-        <p>
-          <span className={this.state.isLoading ? '' : 'd-none'}>Loading...</span>
-          {this.state.contacts && this.state.contacts.length &&
-            <Contacts contacts={this.state.contacts} />
-          }
-        </p>
-      </div>
-      
-    )
+      <Router>
+        <div className='flyout'>
+          <MDBNavbar color='fonce' dark expand='md' fixed='top' scrolling>
+            <MDBNavbarBrand href='/' className='py-0 font-weight-bold'>
+              <Logo style={{ height: '2.5rem', width: '2.5rem' }} />
+              <strong className='align-middle'>My Money</strong>
+            </MDBNavbarBrand>
+            <MDBNavbarToggler
+              onClick={this.toggleCollapse('mainNavbarCollapse')}
+            />
+            <MDBCollapse id='mainNavbarCollapse' isOpen={collapseID} navbar>
+              <MDBNavbarNav right>
+                <MDBNavItem>
+                  <MDBNavLink
+                    exact
+                    to='/'
+                    onClick={this.closeCollapse('mainNavbarCollapse')}
+                  >
+                    Home
+                  </MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem>
+                  <MDBNavLink
+                    onClick={this.closeCollapse('mainNavbarCollapse')}
+                    to='/aboutus'
+                  >
+                    About Us
+                  </MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem>
+                  <MDBNavLink
+                    onClick={this.closeCollapse('mainNavbarCollapse')}
+                    to='/support'
+                  >
+                    Support
+                  </MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem>
+                  <MDBNavLink
+                    onClick={this.closeCollapse('mainNavbarCollapse')}
+                    to='/login'
+                  >
+                    Login
+                  </MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem>
+                  <MDBNavLink
+                    onClick={this.closeCollapse('mainNavbarCollapse')}
+                    to='/register'
+                  >
+                    Sign Up
+                  </MDBNavLink>
+                </MDBNavItem>
+                
+              </MDBNavbarNav>
+            </MDBCollapse>
+          </MDBNavbar>
+          {collapseID && overlay}
+          <main style={{ marginTop: '4rem' }}>
+            <Routes />
+          </main>
+          <MDBFooter color='fonce'>
+            <p className='footer-copyright mb-0 py-3 text-center'>
+              &copy; {new Date().getFullYear()}
+              <a href='https://www.my-money.com'> My Money </a>
+            </p>
+          </MDBFooter>
+        </div>
+      </Router>
+    );
   }
 }
 
