@@ -5,6 +5,7 @@ import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import './index.css';
 import './overrides.css';
+import './themes.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

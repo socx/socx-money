@@ -37,15 +37,15 @@
   outline: none; }
 
 /** Additional Styles **/
+.sectionPage {
+  margin-bottom: 0 !important;
+  height: 420px; }
+
 .sectionPage::after {
-  content: '';
-  height: 100%;
-  width: 100%;
-  position: relative;
-  background: url("./assets/mother-and-son.png") !important;
+  background: url("./assets/mother-and-daughter.jpg") !important;
   background-position: center center;
-  background-size: cover;
-  filter: opacity(0.1); }
+  background-size: cover !important;
+  filter: opacity(1) !important; }
 
 @media (max-width: 576px) {
   .edge-header.reduced {

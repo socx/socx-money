@@ -8,12 +8,11 @@ import {
   MDBRow,
   MDBCardBody,
   MDBIcon,
-  MDBCard,
-  MDBCardTitle,
-  MDBCardImage,
-  MDBCardText,
-  MDBAnimation,
-  MDBNavLink
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem,
+  MDBInputGroup
 } from 'mdbreact';
 import './styles.css';
 import { THEME } from '../../constants/common';
@@ -29,60 +28,80 @@ class Welcome extends React.Component {
           <MDBFreeBird>
             <MDBRow>
               <MDBCol
-                md='10'
-                className='mx-auto float-none white z-depth-1 py-2 px-2'
+                md='8'
+                className='mx-auto float-none white z-depth-1 py-2'
               >
                 <MDBCardBody className='text-center'>
-                  <h2 className='h2-responsive mb-4'>
-                    <strong className='font-weight-bold'>
-                      <img
-                        src='https://mdbootstrap.com/img/Marketing/other/logo/logo-mdb-react-small.png'
-                        alt='mdbreact-logo'
-                        className='pr-2'
-                      />
-                      Welcome Page
-                    </strong>
-                  </h2>
-                  <MDBRow />
-                  <p>React Bootstrap with Material Design</p>
-                  <MDBRow className='d-flex flex-row justify-content-center row'>
-                    <a
-                      className='border nav-link border-light rounded mr-1 mx-2 mb-2'
-                      href='https://mdbootstrap.com/react/'
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      <MDBIcon icon='graduation-cap' className='mr-2' />
-                      <span className='font-weight-bold'>
-                        Official Documentation
-                      </span>
-                    </a>
-                    <a
-                      className='border nav-link border-light rounded mx-2 mb-2'
-                      href='https://mdbootstrap.com/products/react-ui-kit/'
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      <MDBIcon far icon='gem' className='mr-2' />
-                      <span className='font-weight-bold'>PRO</span>
-                    </a>
-                    <a
-                      className='border nav-link border-light rounded mx-2 mb-2'
-                      href='https://mdbootstrap.com/docs/react/getting-started/download/'
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      <MDBIcon icon='download' className='mr-2' />
-                      <span className='font-weight-bold'>FREE</span>
-                    </a>
-                  </MDBRow>
+                  <h4 className="text-center">
+                    1 GBP = 450.2345 NGN
+                  </h4>
+                  <hr className="hr-light" />
+                  <p className="text-left">You send</p>
+                  <MDBInputGroup
+                    containerClassName='mb-3'
+                    prepend={
+                      <MDBDropdown>
+                        <MDBDropdownToggle
+                          color={THEME}
+                          size='md'
+                          className='m-0 px-3 z-depth-0'
+                        >
+                          GBP <MDBIcon icon='caret-down' className='ml-1' />
+                        </MDBDropdownToggle>
+                        <MDBDropdownMenu color={THEME}>
+                          <MDBDropdownItem>GBP (Pounds Sterling)</MDBDropdownItem>
+                          <MDBDropdownItem>CAD (Canadian Dollars)</MDBDropdownItem>
+                        </MDBDropdownMenu>
+                      </MDBDropdown>
+                    }
+                  />
+                  <p className="text-left">They get</p>
+                  <MDBInputGroup
+                    containerClassName='mb-3'
+                    prepend={
+                      <MDBDropdown>
+                        <MDBDropdownToggle
+                          color={THEME}
+                          size='md'
+                          className='m-0 px-3 z-depth-0'
+                        >
+                          NGN <MDBIcon icon='caret-down' className='ml-1' />
+                        </MDBDropdownToggle>
+                        <MDBDropdownMenu color={THEME}>
+                          <MDBDropdownItem>GHS (Ghanaian Cedis to Ghana)</MDBDropdownItem>
+                          <MDBDropdownItem>KSH (Kenyan Shillings to Kenya)</MDBDropdownItem>
+                          <MDBDropdownItem>NGN (Nigerian Naira to Nigeria)</MDBDropdownItem>
+                        </MDBDropdownMenu>
+                      </MDBDropdown>
+                    }
+                  />
+                  
+                  <div className="form-group d-none">
+                    <label htmlFor="exampleFormControlSelect1">You send</label>
+                    <select className="form-control custom-select" id="exampleFormControlSelect1">
+                      <option>GBP from United Kingdom</option>
+                      <option>CAD from Canada</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group d-none">
+                    <label htmlFor="exampleFormControlSelect1">They get</label>
+                    <select className="form-control custom-select" id="exampleFormControlSelect1">
+                      <option>GHS (Ghanaian Cedis) </option>
+                      <option>KES (Kenyan Shillings)</option>
+                      <option>NGN (Nigerian Naira)</option>
+                    </select>
+                  </div>
+                  <div className="text-center black-textw">
+                    <MDBBtn rounded color={THEME} className='btn' onClick={this.goToUrl}>Send Now</MDBBtn>
+                  </div>
                 </MDBCardBody>
               </MDBCol>
             </MDBRow>
           </MDBFreeBird>
           <MDBContainer className='text-center'>
             <MDBRow>
-              <MDBCol md='12' className='mt-4'>
+              <MDBCol md='12'>
                 <h2 className='text-center my-5 font-weight-bold'>
                   Why is it so great?
                 </h2>
