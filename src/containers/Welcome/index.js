@@ -16,6 +16,7 @@ import {
 } from 'mdbreact';
 import './styles.css';
 import { THEME } from '../../constants/common';
+import Landmark from '../../components/landmark';
 
 class Welcome extends React.Component {
   scrollToTop = () => window.scrollTo(0, 0);
@@ -23,12 +24,13 @@ class Welcome extends React.Component {
   render() {
     return (
       <>
-        <MDBEdgeHeader color={THEME} className='sectionPage' />
-        <div className='mt-3 mb-5'>
+        <Landmark />
+        <MDBEdgeHeader color={THEME} className='sectionPage d-none' />
+        <div className='mt-0 mb-0'>
           <MDBFreeBird>
             <MDBRow>
               <MDBCol
-                md='8'
+                md='7'
                 className='mx-auto float-none white z-depth-1 py-2'
               >
                 <MDBCardBody className='text-center'>
@@ -36,65 +38,59 @@ class Welcome extends React.Component {
                     1 GBP = 450.2345 NGN
                   </h4>
                   <hr className="hr-light" />
-                  <p className="text-left">You send</p>
-                  <MDBInputGroup
-                    containerClassName='mb-3'
-                    prepend={
-                      <MDBDropdown>
-                        <MDBDropdownToggle
-                          color={THEME}
-                          size='md'
-                          className='m-0 px-3 z-depth-0'
-                        >
-                          GBP <MDBIcon icon='caret-down' className='ml-1' />
-                        </MDBDropdownToggle>
-                        <MDBDropdownMenu color={THEME}>
-                          <MDBDropdownItem>GBP (Pounds Sterling)</MDBDropdownItem>
-                          <MDBDropdownItem>CAD (Canadian Dollars)</MDBDropdownItem>
-                        </MDBDropdownMenu>
-                      </MDBDropdown>
-                    }
-                  />
-                  <p className="text-left">They get</p>
-                  <MDBInputGroup
-                    containerClassName='mb-3'
-                    prepend={
-                      <MDBDropdown>
-                        <MDBDropdownToggle
-                          color={THEME}
-                          size='md'
-                          className='m-0 px-3 z-depth-0'
-                        >
-                          NGN <MDBIcon icon='caret-down' className='ml-1' />
-                        </MDBDropdownToggle>
-                        <MDBDropdownMenu color={THEME}>
-                          <MDBDropdownItem>GHS (Ghanaian Cedis to Ghana)</MDBDropdownItem>
-                          <MDBDropdownItem>KSH (Kenyan Shillings to Kenya)</MDBDropdownItem>
-                          <MDBDropdownItem>NGN (Nigerian Naira to Nigeria)</MDBDropdownItem>
-                        </MDBDropdownMenu>
-                      </MDBDropdown>
-                    }
-                  />
-                  
-                  <div className="form-group d-none">
-                    <label htmlFor="exampleFormControlSelect1">You send</label>
-                    <select className="form-control custom-select" id="exampleFormControlSelect1">
-                      <option>GBP from United Kingdom</option>
-                      <option>CAD from Canada</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group d-none">
-                    <label htmlFor="exampleFormControlSelect1">They get</label>
-                    <select className="form-control custom-select" id="exampleFormControlSelect1">
-                      <option>GHS (Ghanaian Cedis) </option>
-                      <option>KES (Kenyan Shillings)</option>
-                      <option>NGN (Nigerian Naira)</option>
-                    </select>
-                  </div>
-                  <div className="text-center black-textw">
-                    <MDBBtn rounded color={THEME} className='btn' onClick={this.goToUrl}>Send Now</MDBBtn>
-                  </div>
+                  <form>
+                    <div className='form-row'>
+                      <div className='col-xs-12 col-md-3 text-left'>
+                        You send
+                      </div>
+                      <div className='col-xs-12 col-md-9'>
+                        <MDBInputGroup
+                          containerClassName='mb-3'
+                          prepend={
+                            <MDBDropdown>
+                              <MDBDropdownToggle
+                                color={THEME}
+                                size='md'
+                                className='m-0 px-3 z-depth-0'
+                              >
+                                GBP <MDBIcon icon='caret-down' className='ml-1' />
+                              </MDBDropdownToggle>
+                              <MDBDropdownMenu color={THEME}>
+                                <MDBDropdownItem>GBP (Pounds Sterling)</MDBDropdownItem>
+                                <MDBDropdownItem>CAD (Canadian Dollars)</MDBDropdownItem>
+                              </MDBDropdownMenu>
+                            </MDBDropdown>
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className='form-row'>
+                      <div className='col-xs-12 col-md-3 text-left'>
+                        They receive
+                      </div>
+                      <div className='col-xs-12 col-md-9'>
+                        <MDBInputGroup
+                          containerClassName='mb-3'
+                          prepend={
+                            <MDBDropdown>
+                              <MDBDropdownToggle
+                                color={THEME}
+                                size='md'
+                                className='m-0 px-3 z-depth-0'
+                              >
+                                NGN <MDBIcon icon='caret-down' className='ml-1' />
+                              </MDBDropdownToggle>
+                              <MDBDropdownMenu color={THEME}>
+                                <MDBDropdownItem>GHS (Ghanaian Cedis to Ghana)</MDBDropdownItem>
+                                <MDBDropdownItem>KSH (Kenyan Shillings to Kenya)</MDBDropdownItem>
+                                <MDBDropdownItem>NGN (Nigerian Naira to Nigeria)</MDBDropdownItem>
+                              </MDBDropdownMenu>
+                            </MDBDropdown>
+                          }
+                        />
+                      </div>
+                    </div>
+                  </form>
                 </MDBCardBody>
               </MDBCol>
             </MDBRow>
