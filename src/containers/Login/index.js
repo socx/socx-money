@@ -10,9 +10,7 @@ import {
   MDBContainer,
   MDBEdgeHeader
 } from 'mdbreact';
-import { THEME } from '../../constants/common';
-import SectionContainer from '../../components/sectionContainer';
-
+import { THEME } from 'constants/common';
 import './styles.css'
 
 const Login = props => {

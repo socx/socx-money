@@ -1,99 +1,59 @@
 import React from 'react';
 import {
-  MDBEdgeHeader,
   MDBFreeBird,
   MDBBtn,
   MDBContainer,
   MDBCol,
-  MDBRow,
-  MDBCardBody,
-  MDBIcon,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
-  MDBInputGroup
+  MDBRow
 } from 'mdbreact';
 import './styles.css';
-import { THEME } from '../../constants/common';
-import Landmark from '../../components/landmark';
+import { THEME } from 'constants/common';
+import Landmark from 'components/landmark';
+import RateCalculator from 'components/rateCalculator';
 
 class Welcome extends React.Component {
   scrollToTop = () => window.scrollTo(0, 0);
+  constructor(props) {
+    super(props);
+    this.exchangeRate = React.createRef();
+    this.sourceAmount = React.createRef();
+    this.destinationAmount = React.createRef();
+  }
+
+  getRate(sourceAmount, destinationAmount) {
+    const rate = 485.1234;
+    this.exchangeRate = {
+      sourceCurrencyCode: 'GBP',
+      destinationCurrencyCode: 'NGN',
+      rate,
+      fees: 2.99,
+      sourceAmount: sourceAmount ? sourceAmount : (1/rate)* destinationAmount,
+      destinationAmount: destinationAmount ? destinationAmount : rate * sourceAmount
+    };
+  }
+
+  sourceAmountChanged(sourceInput) {
+    this.getRate(sourceInput.target.value, null);
+  }
+
+  destinationAmountChanged(destinationInput) {
+    this.getRate(null, destinationInput.target.value);
+  } 
 
   render() {
     return (
       <>
         <Landmark />
-        <MDBEdgeHeader color={THEME} className='sectionPage d-none' />
         <div className='mt-0 mb-0'>
           <MDBFreeBird>
-            <MDBRow>
-              <MDBCol
-                md='7'
-                className='mx-auto float-none white z-depth-1 py-2'
-              >
-                <MDBCardBody className='text-center'>
-                  <h4 className="text-center">
-                    1 GBP = 450.2345 NGN
-                  </h4>
-                  <hr className="hr-light" />
-                  <form>
-                    <div className='form-row'>
-                      <div className='col-xs-12 col-md-3 text-left'>
-                        You send
-                      </div>
-                      <div className='col-xs-12 col-md-9'>
-                        <MDBInputGroup
-                          containerClassName='mb-3'
-                          prepend={
-                            <MDBDropdown>
-                              <MDBDropdownToggle
-                                color={THEME}
-                                size='md'
-                                className='m-0 px-3 z-depth-0'
-                              >
-                                GBP <MDBIcon icon='caret-down' className='ml-1' />
-                              </MDBDropdownToggle>
-                              <MDBDropdownMenu color={THEME}>
-                                <MDBDropdownItem>GBP (Pounds Sterling)</MDBDropdownItem>
-                                <MDBDropdownItem>CAD (Canadian Dollars)</MDBDropdownItem>
-                              </MDBDropdownMenu>
-                            </MDBDropdown>
-                          }
-                        />
-                      </div>
-                    </div>
-                    <div className='form-row'>
-                      <div className='col-xs-12 col-md-3 text-left'>
-                        They receive
-                      </div>
-                      <div className='col-xs-12 col-md-9'>
-                        <MDBInputGroup
-                          containerClassName='mb-3'
-                          prepend={
-                            <MDBDropdown>
-                              <MDBDropdownToggle
-                                color={THEME}
-                                size='md'
-                                className='m-0 px-3 z-depth-0'
-                              >
-                                NGN <MDBIcon icon='caret-down' className='ml-1' />
-                              </MDBDropdownToggle>
-                              <MDBDropdownMenu color={THEME}>
-                                <MDBDropdownItem>GHS (Ghanaian Cedis to Ghana)</MDBDropdownItem>
-                                <MDBDropdownItem>KSH (Kenyan Shillings to Kenya)</MDBDropdownItem>
-                                <MDBDropdownItem>NGN (Nigerian Naira to Nigeria)</MDBDropdownItem>
-                              </MDBDropdownMenu>
-                            </MDBDropdown>
-                          }
-                        />
-                      </div>
-                    </div>
-                  </form>
-                </MDBCardBody>
-              </MDBCol>
-            </MDBRow>
+            <RateCalculator 
+              theme={THEME}
+              sourceAmount={this.sourceAmount}
+              destinationAmount={this.destinationAmount}
+              exchangeRate={this.exchangeRate}
+              sourceAmountChanged={this.sourceAmountChanged}
+              destinationAmountChanged={this.destinationAmountChanged}
+            />
           </MDBFreeBird>
           <MDBContainer className='text-center'>
             <MDBRow>
