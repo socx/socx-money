@@ -12,7 +12,7 @@ import {
 } from 'mdbreact';
 
 import './styles.css';
-import { THEME } from '../../constants/common';
+import { THEME } from 'constants/common';
 
 const Register = props => {
   return (

@@ -1,99 +1,56 @@
 import React from 'react';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import {
-  MDBEdgeHeader,
   MDBFreeBird,
   MDBBtn,
   MDBContainer,
   MDBCol,
-  MDBRow,
-  MDBCardBody,
-  MDBIcon,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
-  MDBInputGroup
+  MDBRow
 } from 'mdbreact';
 import './styles.css';
-import { THEME } from '../../constants/common';
-import Landmark from '../../components/landmark';
+import { THEME } from 'constants/common';
+import Landmark from 'components/landmark';
+import RateCalculator from 'components/rateCalculator';
+import {
+  destinationAmountChanged,
+  destinationCurrencyChanged,
+  sourceAmountChanged,
+  sourceCurrencyChanged,
+  getSourceCurrencies,
+  getDestinationCurrencies
+} from './actions';
 
 class Welcome extends React.Component {
   scrollToTop = () => window.scrollTo(0, 0);
+  componentDidMount () {
+    this.props.getDestinationCurrencies();
+    this.props.getSourceCurrencies();
+  }
 
   render() {
+    const props = this.props;
+
     return (
       <>
         <Landmark />
-        <MDBEdgeHeader color={THEME} className='sectionPage d-none' />
         <div className='mt-0 mb-0'>
           <MDBFreeBird>
-            <MDBRow>
-              <MDBCol
-                md='7'
-                className='mx-auto float-none white z-depth-1 py-2'
-              >
-                <MDBCardBody className='text-center'>
-                  <h4 className="text-center">
-                    1 GBP = 450.2345 NGN
-                  </h4>
-                  <hr className="hr-light" />
-                  <form>
-                    <div className='form-row'>
-                      <div className='col-xs-12 col-md-3 text-left'>
-                        You send
-                      </div>
-                      <div className='col-xs-12 col-md-9'>
-                        <MDBInputGroup
-                          containerClassName='mb-3'
-                          prepend={
-                            <MDBDropdown>
-                              <MDBDropdownToggle
-                                color={THEME}
-                                size='md'
-                                className='m-0 px-3 z-depth-0'
-                              >
-                                GBP <MDBIcon icon='caret-down' className='ml-1' />
-                              </MDBDropdownToggle>
-                              <MDBDropdownMenu color={THEME}>
-                                <MDBDropdownItem>GBP (Pounds Sterling)</MDBDropdownItem>
-                                <MDBDropdownItem>CAD (Canadian Dollars)</MDBDropdownItem>
-                              </MDBDropdownMenu>
-                            </MDBDropdown>
-                          }
-                        />
-                      </div>
-                    </div>
-                    <div className='form-row'>
-                      <div className='col-xs-12 col-md-3 text-left'>
-                        They receive
-                      </div>
-                      <div className='col-xs-12 col-md-9'>
-                        <MDBInputGroup
-                          containerClassName='mb-3'
-                          prepend={
-                            <MDBDropdown>
-                              <MDBDropdownToggle
-                                color={THEME}
-                                size='md'
-                                className='m-0 px-3 z-depth-0'
-                              >
-                                NGN <MDBIcon icon='caret-down' className='ml-1' />
-                              </MDBDropdownToggle>
-                              <MDBDropdownMenu color={THEME}>
-                                <MDBDropdownItem>GHS (Ghanaian Cedis to Ghana)</MDBDropdownItem>
-                                <MDBDropdownItem>KSH (Kenyan Shillings to Kenya)</MDBDropdownItem>
-                                <MDBDropdownItem>NGN (Nigerian Naira to Nigeria)</MDBDropdownItem>
-                              </MDBDropdownMenu>
-                            </MDBDropdown>
-                          }
-                        />
-                      </div>
-                    </div>
-                  </form>
-                </MDBCardBody>
-              </MDBCol>
-            </MDBRow>
+            <RateCalculator 
+              theme={THEME}
+              rate={props.rate}
+              fees={props.fees}
+              sourceCurrencies={props.sourceCurrencies}
+              sourceCurrency={props.sourceCurrency}
+              sourceCurrencyChanged={props.sourceCurrencyChanged}
+              sourceAmount={props.sourceAmount}
+              sourceAmountChanged={props.sourceAmountChanged}
+              destinationCurrencies={props.destinationCurrencies}
+              destinationCurrency={props.destinationCurrency}
+              destinationCurrencyChanged={props.destinationCurrencyChanged}
+              destinationAmount={props.destinationAmount}
+              destinationAmountChanged={props.destinationAmountChanged}
+            />
           </MDBFreeBird>
           <MDBContainer className='text-center'>
             <MDBRow>
@@ -104,14 +61,6 @@ class Welcome extends React.Component {
                 <p className='text-center text-muted mb-1'>
                   We make international money transfers easier than ever.
                   Choose how and when you send, with great exchange rates and low fees.
-                </p>
-                <p className='text-center text-muted mb-1'>
-                  {/* Twitter has created a Bootstrap to support you in faster and
-                  easier development of responsive and effective websites. */}
-                </p>
-                <p className='text-center text-muted'>
-                  {/* We present you a framework containing the best features of
-                  both of them - Material Design for Bootstrap. */}
                 </p>
                 <hr className='my-3' />
               </MDBCol>
@@ -223,4 +172,27 @@ class Welcome extends React.Component {
   }
 }
 
-export default Welcome;
+const mapStateToProps = state => ({
+  rate: state.welcome.rate,
+  fees: state.welcome.fees,
+  sourceCurrencies: state.welcome.sourceCurrencies,
+  sourceAmount: state.welcome.sourceAmount,
+  sourceCurrency: state.welcome.sourceCurrency,
+  destinationCurrencies: state.welcome.destinationCurrencies,
+  destinationAmount: state.welcome.destinationAmount,
+  destinationCurrency: state.welcome.destinationCurrency,
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  sourceAmountChanged,
+  sourceCurrencyChanged,
+  getSourceCurrencies,
+  destinationAmountChanged,
+  destinationCurrencyChanged,
+  getDestinationCurrencies
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Welcome)

@@ -11,7 +11,7 @@ const Landmark = () => {
               Fastest & safest way to send money
             </h1>
             <h3 className="landmark-text-subtitle">
-              We make international money transfers easier than ever. Choose how and when you send, with great exchange rates and low fees.
+              We make international money transfers easier than ever. We offer great exchange rates and low fees.
             </h3>
           </div>
         </div>

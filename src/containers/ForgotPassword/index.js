@@ -10,7 +10,7 @@ import {
   MDBContainer,
   MDBEdgeHeader
 } from 'mdbreact';
-import { THEME } from '../../constants/common';
+import { THEME } from 'constants/common';
 
 import './styles.css'
 
