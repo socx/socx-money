@@ -1,4 +1,6 @@
 import React from 'react';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import {
   MDBFreeBird,
   MDBBtn,
@@ -10,37 +12,25 @@ import './styles.css';
 import { THEME } from 'constants/common';
 import Landmark from 'components/landmark';
 import RateCalculator from 'components/rateCalculator';
+import {
+  destinationAmountChanged,
+  destinationCurrencyChanged,
+  sourceAmountChanged,
+  sourceCurrencyChanged,
+  getSourceCurrencies,
+  getDestinationCurrencies
+} from './actions';
 
 class Welcome extends React.Component {
   scrollToTop = () => window.scrollTo(0, 0);
-  constructor(props) {
-    super(props);
-    this.exchangeRate = React.createRef();
-    this.sourceAmount = React.createRef();
-    this.destinationAmount = React.createRef();
+  componentDidMount () {
+    this.props.getDestinationCurrencies();
+    this.props.getSourceCurrencies();
   }
-
-  getRate(sourceAmount, destinationAmount) {
-    const rate = 485.1234;
-    this.exchangeRate = {
-      sourceCurrencyCode: 'GBP',
-      destinationCurrencyCode: 'NGN',
-      rate,
-      fees: 2.99,
-      sourceAmount: sourceAmount ? sourceAmount : (1/rate)* destinationAmount,
-      destinationAmount: destinationAmount ? destinationAmount : rate * sourceAmount
-    };
-  }
-
-  sourceAmountChanged(sourceInput) {
-    this.getRate(sourceInput.target.value, null);
-  }
-
-  destinationAmountChanged(destinationInput) {
-    this.getRate(null, destinationInput.target.value);
-  } 
 
   render() {
+    const props = this.props;
+
     return (
       <>
         <Landmark />
@@ -48,11 +38,18 @@ class Welcome extends React.Component {
           <MDBFreeBird>
             <RateCalculator 
               theme={THEME}
-              sourceAmount={this.sourceAmount}
-              destinationAmount={this.destinationAmount}
-              exchangeRate={this.exchangeRate}
-              sourceAmountChanged={this.sourceAmountChanged}
-              destinationAmountChanged={this.destinationAmountChanged}
+              rate={props.rate}
+              fees={props.fees}
+              sourceCurrencies={props.sourceCurrencies}
+              sourceCurrency={props.sourceCurrency}
+              sourceCurrencyChanged={props.sourceCurrencyChanged}
+              sourceAmount={props.sourceAmount}
+              sourceAmountChanged={props.sourceAmountChanged}
+              destinationCurrencies={props.destinationCurrencies}
+              destinationCurrency={props.destinationCurrency}
+              destinationCurrencyChanged={props.destinationCurrencyChanged}
+              destinationAmount={props.destinationAmount}
+              destinationAmountChanged={props.destinationAmountChanged}
             />
           </MDBFreeBird>
           <MDBContainer className='text-center'>
@@ -64,14 +61,6 @@ class Welcome extends React.Component {
                 <p className='text-center text-muted mb-1'>
                   We make international money transfers easier than ever.
                   Choose how and when you send, with great exchange rates and low fees.
-                </p>
-                <p className='text-center text-muted mb-1'>
-                  {/* Twitter has created a Bootstrap to support you in faster and
-                  easier development of responsive and effective websites. */}
-                </p>
-                <p className='text-center text-muted'>
-                  {/* We present you a framework containing the best features of
-                  both of them - Material Design for Bootstrap. */}
                 </p>
                 <hr className='my-3' />
               </MDBCol>
@@ -183,4 +172,27 @@ class Welcome extends React.Component {
   }
 }
 
-export default Welcome;
+const mapStateToProps = state => ({
+  rate: state.welcome.rate,
+  fees: state.welcome.fees,
+  sourceCurrencies: state.welcome.sourceCurrencies,
+  sourceAmount: state.welcome.sourceAmount,
+  sourceCurrency: state.welcome.sourceCurrency,
+  destinationCurrencies: state.welcome.destinationCurrencies,
+  destinationAmount: state.welcome.destinationAmount,
+  destinationCurrency: state.welcome.destinationCurrency,
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  sourceAmountChanged,
+  sourceCurrencyChanged,
+  getSourceCurrencies,
+  destinationAmountChanged,
+  destinationCurrencyChanged,
+  getDestinationCurrencies
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Welcome)

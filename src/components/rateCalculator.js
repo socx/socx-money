@@ -14,9 +14,13 @@ import {
 import { formatMoney } from 'helpers/Utils';
 
 class RateCalculator extends Component {
+
   render() {
-    console.log(this.props);
-    const { theme, sourceAmount, destinationAmount, sourceAmountChanged, destinationAmountChanged} = this.props;
+    const { 
+      theme, sourceCurrencies, destinationCurrencies, rate, fees,
+      sourceCurrency, sourceAmount, sourceAmountChanged, sourceCurrencyChanged,
+      destinationCurrency, destinationAmount, destinationAmountChanged, destinationCurrencyChanged,
+    } = this.props;
     return (
       <>
         <MDBRow>
@@ -26,22 +30,20 @@ class RateCalculator extends Component {
           >
             <MDBCardBody className='text-center'>
               <h4 className="text-center">
-                1 GBP = 450 NGN
-                {/* 1 {exchangeRate && exchangeRate.sourceCurrencyCode} = {exchangeRate && formatMoney(exchangeRate.rate)} {exchangeRate && exchangeRate.destinationCurrencyCode} */}
+                1 {sourceCurrency} =  {formatMoney(rate)} {destinationCurrency}
               </h4>
               <hr className="hr-light" />
               <form>
                 <div className='form-row'>
                   <div className='col-xs-12 col-md-3 text-left'>
-                    You send
+                    Send
                   </div>
                   <div className='col-xs-12 col-md-9'>
-                    <MDBInputGroup
+                    <MDBInputGroup material
                       containerClassName='mb-3'
-                      // value={exchangeRate && formatMoney(exchangeRate.sourceAmount)}
-                      defaultValue={9}
-                      onKeyUp={sourceAmountChanged}
-                      ref={sourceAmount}
+                      valueDefault={sourceAmount}
+                      getValue={e => sourceAmountChanged(e)}
+                      // onChange={e => sourceAmountChanged(e.target.value)}
                       prepend={
                         <MDBDropdown>
                           <MDBDropdownToggle
@@ -49,12 +51,18 @@ class RateCalculator extends Component {
                             size='md'
                             className='m-0 px-3 z-depth-0'
                           >
-                            GBP <MDBIcon icon='caret-down' className='ml-1' />
-                            {/* {exchangeRate && exchangeRate.sourceCurrencyCode} <MDBIcon icon='caret-down' className='ml-1' /> */}
+                            {sourceCurrency} <MDBIcon icon='caret-down' className='ml-1' />
                           </MDBDropdownToggle>
                           <MDBDropdownMenu color={theme}>
-                            <MDBDropdownItem>GBP (Pounds Sterling)</MDBDropdownItem>
-                            <MDBDropdownItem>CAD (Canadian Dollars)</MDBDropdownItem>
+                            {sourceCurrencies.map(function(currency, i){
+                              return <MDBDropdownItem
+                                  obj={currency.code}
+                                  key={i}
+                                  onClick={() => sourceCurrencyChanged(currency.code)}
+                                  >
+                                    {currency.description}
+                                </MDBDropdownItem>;
+                            })}
                           </MDBDropdownMenu>
                         </MDBDropdown>
                       }
@@ -63,13 +71,13 @@ class RateCalculator extends Component {
                 </div>
                 <div className='form-row'>
                   <div className='col-xs-12 col-md-3 text-left'>
-                    They get
+                    Receive
                   </div>
                   <div className='col-xs-12 col-md-9'>
                     <MDBInputGroup
                       containerClassName='mb-3'
-                      onKeyUp={destinationAmountChanged}
-                      ref={destinationAmount}
+                      getValue={e => destinationAmountChanged(e)}
+                      // onChange={e => destinationAmountChanged(e.target.value)}
                       prepend={
                         <MDBDropdown>
                           <MDBDropdownToggle
@@ -77,27 +85,32 @@ class RateCalculator extends Component {
                             size='md'
                             className='m-0 px-3 z-depth-0'
                           >
-                            NGN <MDBIcon icon='caret-down' className='ml-1' />
-                            {/* {exchangeRate && exchangeRate.destinationCurrencyCode} <MDBIcon icon='caret-down' className='ml-1' /> */}
+                            {destinationCurrency} <MDBIcon icon='caret-down' className='ml-1' />
                           </MDBDropdownToggle>
                           <MDBDropdownMenu color={theme}>
-                            <MDBDropdownItem>GHS (Ghanaian Cedis to Ghana)</MDBDropdownItem>
-                            <MDBDropdownItem>KSH (Kenyan Shillings to Kenya)</MDBDropdownItem>
-                            <MDBDropdownItem>NGN (Nigerian Naira to Nigeria)</MDBDropdownItem>
+                            {destinationCurrencies.map(function(currency, i){
+                              return <MDBDropdownItem
+                                obj={currency.code}
+                                key={i}
+                                onClick={() => destinationCurrencyChanged(currency.code)}
+                                >
+                                  {currency.description}
+                              </MDBDropdownItem>;
+                            })}
                           </MDBDropdownMenu>
                         </MDBDropdown>
                       }
                     />
                   </div>
                 </div>
-                <div className='form-row'>
+                {/* <div className='form-row'>
                   <div className='col-xs-12 col-md-3 text-left'>
                     Fees
                   </div>
                   <div className='col-xs-12 col-md-9 text-left'>
-                    £1.99
+                    £{formatMoney(fees)}
                   </div>
-                </div>
+                </div> */}
                 <div className='form-row'>
                   <div className='col-xs-12 col-md-3 text-left'>
                     
