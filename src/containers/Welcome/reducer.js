@@ -42,15 +42,11 @@ export default (state = initialState, action) => {
         sourceAmount: payload.sourceAmount,
         destinationAmount: payload.destinationAmount
       }
-    case constants.GET_SOURCE_CURRENCIES:
+    case constants.GET_CURRENCIES:
       return {
         ...state,
-        sourceCurrencies: payload
-      }
-    case constants.GET_DESTINATION_CURRENCIES:
-      return {
-        ...state,
-        destinationCurrencies: payload
+        sourceCurrencies: payload.sourceCurrencies,
+        destinationCurrencies: payload.destinationCurrencies
       }
     default:
       return state
