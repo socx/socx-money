@@ -17,15 +17,13 @@ import {
   destinationCurrencyChanged,
   sourceAmountChanged,
   sourceCurrencyChanged,
-  getSourceCurrencies,
-  getDestinationCurrencies
+  getCurrencies
 } from './actions';
 
 class Welcome extends React.Component {
   scrollToTop = () => window.scrollTo(0, 0);
   componentDidMount () {
-    this.props.getDestinationCurrencies();
-    this.props.getSourceCurrencies();
+    this.props.getCurrencies();
   }
 
   render() {
@@ -186,10 +184,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
   sourceAmountChanged,
   sourceCurrencyChanged,
-  getSourceCurrencies,
   destinationAmountChanged,
   destinationCurrencyChanged,
-  getDestinationCurrencies
+  getCurrencies
 }, dispatch)
 
 export default connect(

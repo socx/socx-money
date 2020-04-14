@@ -17,7 +17,7 @@ class RateCalculator extends Component {
 
   render() {
     const { 
-      theme, sourceCurrencies, destinationCurrencies, rate, fees,
+      theme, sourceCurrencies, destinationCurrencies, rate,
       sourceCurrency, sourceAmount, sourceAmountChanged, sourceCurrencyChanged,
       destinationCurrency, destinationAmount, destinationAmountChanged, destinationCurrencyChanged,
     } = this.props;
@@ -26,6 +26,7 @@ class RateCalculator extends Component {
         <MDBRow>
           <MDBCol
             md='7'
+            lg='4'
             className='mx-auto float-none white z-depth-1'
           >
             <MDBCardBody className='text-center'>
@@ -35,15 +36,13 @@ class RateCalculator extends Component {
               <hr className="hr-light" />
               <form>
                 <div className='form-row'>
-                  <div className='col-xs-12 col-md-3 text-left'>
+                  <div className='col-xs-12 col-md-12 text-left'>
                     Send
                   </div>
-                  <div className='col-xs-12 col-md-9'>
-                    <MDBInputGroup material
-                      containerClassName='mb-3'
-                      valueDefault={sourceAmount}
-                      getValue={e => sourceAmountChanged(e)}
-                      // onChange={e => sourceAmountChanged(e.target.value)}
+                  <div className='col-xs-12 col-md-12'>
+                    <MDBInputGroup
+                      value={sourceAmount || ''}
+                      onChange={e => sourceAmountChanged(e.target.value)}
                       prepend={
                         <MDBDropdown>
                           <MDBDropdownToggle
@@ -70,14 +69,13 @@ class RateCalculator extends Component {
                   </div>
                 </div>
                 <div className='form-row'>
-                  <div className='col-xs-12 col-md-3 text-left'>
+                  <div className='col-xs-12 col-md-12 text-left'>
                     Receive
                   </div>
-                  <div className='col-xs-12 col-md-9'>
+                  <div className='col-xs-12 col-md-12'>
                     <MDBInputGroup
-                      containerClassName='mb-3'
-                      getValue={e => destinationAmountChanged(e)}
-                      // onChange={e => destinationAmountChanged(e.target.value)}
+                      value={destinationAmount || ''}
+                      onChange={e => destinationAmountChanged(e.target.value)}
                       prepend={
                         <MDBDropdown>
                           <MDBDropdownToggle
@@ -103,14 +101,6 @@ class RateCalculator extends Component {
                     />
                   </div>
                 </div>
-                {/* <div className='form-row'>
-                  <div className='col-xs-12 col-md-3 text-left'>
-                    Fees
-                  </div>
-                  <div className='col-xs-12 col-md-9 text-left'>
-                    £{formatMoney(fees)}
-                  </div>
-                </div> */}
                 <div className='form-row'>
                   <div className='col-xs-12 col-md-3 text-left'>
                     
