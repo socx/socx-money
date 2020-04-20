@@ -17,7 +17,7 @@ class RateCalculator extends Component {
 
   render() {
     const { 
-      theme, sourceCurrencies, destinationCurrencies, rate,
+      theme, sourceCurrencies, destinationCurrencies, rate, isFetching,
       sourceCurrency, sourceAmount, sourceAmountChanged, sourceCurrencyChanged,
       destinationCurrency, destinationAmount, destinationAmountChanged, destinationCurrencyChanged,
     } = this.props;
@@ -41,7 +41,7 @@ class RateCalculator extends Component {
                   </div>
                   <div className='col-xs-12 col-md-12'>
                     <MDBInputGroup
-                      value={sourceAmount || ''}
+                      value={(sourceAmount || '').toString()}
                       onChange={e => sourceAmountChanged(e.target.value)}
                       prepend={
                         <MDBDropdown>
@@ -49,6 +49,7 @@ class RateCalculator extends Component {
                             color={theme}
                             size='md'
                             className='m-0 px-3 z-depth-0'
+                            disabled={isFetching}
                           >
                             {sourceCurrency} <MDBIcon icon='caret-down' className='ml-1' />
                           </MDBDropdownToggle>
@@ -74,7 +75,7 @@ class RateCalculator extends Component {
                   </div>
                   <div className='col-xs-12 col-md-12'>
                     <MDBInputGroup
-                      value={destinationAmount || ''}
+                      value={(destinationAmount || '').toString()}
                       onChange={e => destinationAmountChanged(e.target.value)}
                       prepend={
                         <MDBDropdown>

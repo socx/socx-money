@@ -22,21 +22,6 @@ export const sourceAmountChanged = (newSourceAmount) => async (dispatch, getStat
   })
 }
 
-export const sourceCurrencyChanged = (newSourceCurrency) => async (dispatch, getState) => {
-  const { sourceAmount, rate, fees } = getState().welcome;
-  return dispatch => {
-    dispatch({
-      type: SOURCE_CURRENCY_CHANGED,
-      payload: {
-        sourceCurrency: newSourceCurrency,
-        rate,
-        fees,
-        destinationAmount: sourceAmount * rate
-      }
-    })
-  }
-}
-
 export const destinationAmountChanged = (newDestinationAmount) => async (dispatch, getState) => {
   const { rate } = getState().welcome;
   dispatch({
@@ -48,44 +33,46 @@ export const destinationAmountChanged = (newDestinationAmount) => async (dispatc
   })
 }
 
-export const destinationCurrencyChanged = (newDestinationCurrency) => async (dispatch, getState) => {
-  const { destinationAmount, rate, fees } = getState().welcome;
-  return dispatch => {
-    dispatch({
-      type: DESTINATION_CURRENCY_CHANGED,
-      payload: {
-        destinationCurrency: newDestinationCurrency,
-        rate,
-        fees,
-        sourceAmount: destinationAmount * (1/rate)
-      }
-    })
-  }
+export const sourceCurrencyChanged = (newSourceCurrency) => async (dispatch, getState) => {
+  const { destinationCurrency, sourceAmount } = getState().welcome;
+  const exchangeRate = await getExchangeRate(newSourceCurrency, destinationCurrency);
+  dispatch({
+    type: SOURCE_CURRENCY_CHANGED,
+    payload: {
+      sourceCurrency: newSourceCurrency,
+      rate: exchangeRate.exchangeRate,
+      fees: exchangeRate.fees,
+      destinationAmount: sourceAmount * exchangeRate.exchangeRate
+    }
+  })
 }
 
-// export const destinationCurrencyChanged = (newDestinationCurrency) => async (dispatch, getState) => {
-//   const { sourceCurrency, destinationAmount } = getState().welcome;
-//   const exchangeRate = await this.getExchangeRate(sourceCurrency, newDestinationCurrency);
-//   dispatch({
-//     type: DESTINATION_CURRENCY_CHANGED,
-//     payload: {
-//       destinationCurrency: newDestinationCurrency,
-//       rate: exchangeRate.rate,
-//       fees: exchangeRate.fees,
-//       sourceAmount: destinationAmount * (1/exchangeRate.rate)
-//     }
-//   })
-// }
+export const destinationCurrencyChanged = (newDestinationCurrency) => async (dispatch, getState) => {
+  const { sourceCurrency, sourceAmount } = getState().welcome;
+  const exchangeRate = await getExchangeRate(sourceCurrency, newDestinationCurrency);
+  dispatch({
+    type: DESTINATION_CURRENCY_CHANGED,
+    payload: {
+      destinationCurrency: newDestinationCurrency,
+      rate: exchangeRate.exchangeRate,
+      fees: exchangeRate.fees,
+      destinationAmount: sourceAmount * exchangeRate.exchangeRate
+    }
+  })
+}
 
-// export const getExchangeRate = (sourceCurrency, destinationCurrency) => {
-//   return new Promise((resolve, reject) => {
-//     const url =  `${QA_API_BASE}${CURRENCIES_ENDPOINT}` ||
-//       `${LOCAL_API_BASE}${RATES_ENDPOINT}/${sourceCurrency}/destination/${destinationCurrency}`;
-//     axios.get(url)
-//       .then((response) => resolve(response.data))
-//       .catch((error) => reject(error))
-//   })
-// }
+export const getExchangeRate = (sourceCurrency, destinationCurrency) => {
+  return new Promise((resolve, reject) => {
+    // let url =  `${QA_API_BASE}` || `${LOCAL_API_BASE}`;
+    let url =  `${LOCAL_API_BASE}`;
+    url = `${url}${RATES_ENDPOINT}/${sourceCurrency}/destination/${destinationCurrency}`;
+    axios.get(url)
+      .then((response) => {
+        return resolve(response.data.data)
+      })
+      .catch((error) => reject(error))
+  })
+}
 
 export const getCurrencies = () => async (dispatch) => {
   const mockData = {
@@ -104,8 +91,8 @@ export const getCurrencies = () => async (dispatch) => {
   dispatch({type: GET_CURRENCIES_REQUEST})
   axios.get(url)
     .then((response) => {
-      if (response.status === HTTP_200 && response.data.length) {
-        const { sourceCurrencies, destinationCurrencies } = response.data;
+      if (response.status === HTTP_200 && response.data) {
+        const { sourceCurrencies, destinationCurrencies } = response.data.data;
         dispatch({
           type: GET_CURRENCIES_SUCCESS,
           payload: { sourceCurrencies, destinationCurrencies }

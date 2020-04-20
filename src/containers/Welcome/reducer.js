@@ -34,7 +34,7 @@ export default (state = initialState, action) => {
         destinationCurrency: payload.destinationCurrency,
         rate: payload.rate,
         fees: payload.fees,
-        sourceAmount: payload.sourceAmount
+        destinationAmount: payload.destinationAmount
       }
     case constants.DESTINATION_AMOUNT_CHANGED:
       return {
@@ -42,12 +42,17 @@ export default (state = initialState, action) => {
         sourceAmount: payload.sourceAmount,
         destinationAmount: payload.destinationAmount
       }
-    case constants.GET_CURRENCIES:
+    case constants.GET_CURRENCIES_REQUEST:
+      return { ...state, isFetching: true }
+    case constants.GET_CURRENCIES_SUCCESS:
       return {
         ...state,
+        isFetching: false,
         sourceCurrencies: payload.sourceCurrencies,
         destinationCurrencies: payload.destinationCurrencies
       }
+    case constants.GET_CURRENCIES_FAILED:
+      return { ...state, isFetching: false }
     default:
       return state
   }

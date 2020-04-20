@@ -38,6 +38,7 @@ class Welcome extends React.Component {
               theme={THEME}
               rate={props.rate}
               fees={props.fees}
+              isFetching= {props.isFetching}
               sourceCurrencies={props.sourceCurrencies}
               sourceCurrency={props.sourceCurrency}
               sourceCurrencyChanged={props.sourceCurrencyChanged}
@@ -171,6 +172,7 @@ class Welcome extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  isFetching: state.welcome.isFetching,
   rate: state.welcome.rate,
   fees: state.welcome.fees,
   sourceCurrencies: state.welcome.sourceCurrencies,
